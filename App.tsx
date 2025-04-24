@@ -33,7 +33,7 @@ export default function App() {
           source={require('./assets/img/logo.png')} 
           style={{ width: 100, height: 100, marginBottom: 20 }} 
         />
-        <ActivityIndicator size="large" color="#0085CA" />
+        <ActivityIndicator size={40} color="#0085CA" />
       </View>
     );
   }

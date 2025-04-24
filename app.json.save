@@ -1,3 +1,4 @@
+grep -r "size=\"large\"" --include="*.tsx" --include="*.ts" --include="*.js" --include="*.jsx" .
 {
   "expo": {
     "name": "FMDB",
