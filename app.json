@@ -6,12 +6,14 @@
     "orientation": "portrait",
     "icon": "./assets/img/logo.png",
     "userInterfaceStyle": "dark",
-    "newArchEnabled": true,
     "splash": {
       "image": "./assets/img/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#001B36"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },

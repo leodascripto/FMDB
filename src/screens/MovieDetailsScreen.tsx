@@ -7,6 +7,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { getMovieDetails, MovieDetails, getImageUrl } from '../services/api';
@@ -31,24 +32,30 @@ const MovieDetailsScreen: React.FC<Props> = ({ route }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
-      try {
-        setLoading(true);
-        const data = await getMovieDetails(movieId);
-        setMovie(data);
-        setError(null);
-      } catch (err) {
-        setError('Failed to fetch movie details. Please try again later.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchMovieDetails();
   }, [movieId]);
 
+  const fetchMovieDetails = async () => {
+    try {
+      setLoading(true);
+      const data = await getMovieDetails(movieId);
+      if (data) {
+        setMovie(data);
+        setError(null);
+      } else {
+        setError('Não foi possível carregar os detalhes do filme.');
+      }
+    } catch (err) {
+      console.error('Error fetching movie details:', err);
+      setError('Falha ao buscar detalhes do filme. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const formatDate = (dateString: string) => {
+    if (!dateString) return 'Data desconhecida';
+    
     const options: Intl.DateTimeFormatOptions = { 
       year: 'numeric', 
       month: 'long', 
@@ -60,7 +67,8 @@ const MovieDetailsScreen: React.FC<Props> = ({ route }) => {
   if (loading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#0085CA" />
+        {/* Use a numeric value for size instead of "large" */}
+        <ActivityIndicator size={40} color="#0085CA" />
       </View>
     );
   }
@@ -71,6 +79,9 @@ const MovieDetailsScreen: React.FC<Props> = ({ route }) => {
         <Text style={styles.errorText}>
           {error || 'Não foi possível carregar os detalhes do filme.'}
         </Text>
+        <TouchableOpacity style={styles.retryButton} onPress={fetchMovieDetails}>
+          <Text style={styles.retryText}>Tentar Novamente</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -187,6 +198,18 @@ const styles = StyleSheet.create({
     color: '#FF6B6B',
     textAlign: 'center',
     padding: 20,
+    fontSize: 16,
+  },
+  retryButton: {
+    backgroundColor: '#0085CA',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 20,
+  },
+  retryText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
   },
 });
 

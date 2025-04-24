@@ -29,22 +29,28 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        setLoading(true);
-        const data = await getPopularMovies();
-        setMovies(data);
-        setError(null);
-      } catch (err) {
-        setError('Failed to fetch movies. Please try again later.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchMovies();
   }, []);
+
+  const fetchMovies = async () => {
+    try {
+      setLoading(true);
+      const data = await getPopularMovies();
+      
+      if (data && data.length > 0) {
+        setMovies(data);
+        setError(null);
+      } else {
+        setError('Nenhum filme encontrado');
+        console.log('No movies found in response');
+      }
+    } catch (err) {
+      console.error('Error fetching movies:', err);
+      setError('Falha ao buscar filmes. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const renderMovieItem = ({ item }: { item: Movie }) => (
     <TouchableOpacity
@@ -62,11 +68,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           {item.title}
         </Text>
         <Text style={styles.releaseDate}>
-          {new Date(item.release_date).getFullYear()}
+          {item.release_date ? new Date(item.release_date).getFullYear() : 'N/A'}
         </Text>
         <View style={styles.ratingContainer}>
           <Text style={styles.rating}>
-            {item.vote_average.toFixed(1)}
+            {item.vote_average ? item.vote_average.toFixed(1) : '?'}
           </Text>
         </View>
       </View>
@@ -76,7 +82,8 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   if (loading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#0085CA" />
+        {/* Use a numeric value for size instead of "large" */}
+        <ActivityIndicator size={40} color="#0085CA" />
       </View>
     );
   }
@@ -85,6 +92,9 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     return (
       <View style={styles.centered}>
         <Text style={styles.errorText}>{error}</Text>
+        <TouchableOpacity style={styles.retryButton} onPress={fetchMovies}>
+          <Text style={styles.retryText}>Tentar Novamente</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -162,6 +172,18 @@ const styles = StyleSheet.create({
     color: '#FF6B6B',
     textAlign: 'center',
     padding: 20,
+    fontSize: 16,
+  },
+  retryButton: {
+    backgroundColor: '#0085CA',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 20,
+  },
+  retryText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
   },
 });
 
