@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "FMDB",
+    "slug": "FMDB",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/img/logo.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/img/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#003366"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/img/logo.png",
+        "backgroundColor": "#003366"
+      }
+    },
+    "web": {
+      "favicon": "./assets/img/logo.png"
+    }
+  }
+}
