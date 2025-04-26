@@ -71,6 +71,6 @@ FMDB/
 
 ## 👨‍💻 Autores
 
-Felipe Amador - RM553528
-Leonardo de Oliveira - RM554034
-Sara Gabrielle Sousa - RM552656
+Felipe Amador - RM553528 <br>
+Leonardo de Oliveira - RM554034 <br>
+Sara Gabrielle Sousa - RM552656<br>
